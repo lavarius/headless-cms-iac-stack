@@ -231,11 +231,6 @@ Resources:
           ToPort: 3306
           SourceSecurityGroupId: !Ref ECSSecurityGroup
 
-  ECRRepository:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName: !Sub "${EnvironmentName}-wordpress"
-
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
