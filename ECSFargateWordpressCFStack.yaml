@@ -196,8 +196,6 @@ Resources:
       SubnetId: !Ref PrivateSubnet2
       RouteTableId: !Ref PrivateRouteTable2
 
-  # ... (Subnets, Route Tables, and other VPC resources remain the same)
-
   DatabaseSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
