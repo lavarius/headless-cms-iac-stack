@@ -311,6 +311,9 @@ Resources:
               Value: !Ref DBUser
             - Name: WORDPRESS_DB_PASSWORD
               Value: !Ref DBPassword
+          Cpu: 1024
+          Memory: 1024
+          MemoryReservation: 512
           LogConfiguration:
             LogDriver: awslogs
             Options:
