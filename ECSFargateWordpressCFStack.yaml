@@ -318,6 +318,8 @@ Resources:
               awslogs-group: !Ref WordpressLogGroup
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: wordpress
+      ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
+      TaskRoleArn: !GetAtt ECSTaskRole.Arn
 
   WordpressLogGroup:
     Type: AWS::Logs::LogGroup
@@ -403,9 +405,6 @@ Resources:
               Service: ecs-tasks.amazonaws.com
             Action:
               - "sts:AssumeRole"
-      Path: /
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
       Policies:
         - PolicyName: AccessSecretsAndParameters
           PolicyDocument:
@@ -415,12 +414,12 @@ Resources:
                 Action:
                   - "secretsmanager:GetSecretValue"
                 Resource:
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${EnvironmentName}*"
+                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:wordpress_*"
               - Effect: Allow
                 Action:
                   - "ssm:GetParameters"
                 Resource:
-                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/*"
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/wordpress/*"
 
   ECSTaskRole:
     Type: AWS::IAM::Role
@@ -434,22 +433,20 @@ Resources:
               Service: ecs-tasks.amazonaws.com
             Action:
               - "sts:AssumeRole"
-      Path: /
       Policies:
         - PolicyName: AccessSecretsAndParameters
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               - Effect: Allow
-                Action:
-                  - "secretsmanager:GetSecretValue"
-                Resource:
-                  - !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${EnvironmentName}*"
-              - Effect: Allow
-                Action:
-                  - "ssm:GetParameters"
-                Resource:
-                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/*"
+              Action:
+                - ecr:GetAuthorizationToken
+                - ecr:BatchCheckLayerAvailability
+                - ecr:GetDownloadUrlForLayer
+                - ecr:BatchGetImage
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: "*"
 
 Mappings:
   AWSRegionToAMI:
