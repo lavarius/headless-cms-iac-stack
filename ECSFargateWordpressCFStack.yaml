@@ -233,6 +233,9 @@ Resources:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: !Sub "${EnvironmentName}-WordPressCluster"
+      CapacityProviders:
+        - FARGATE
+        - FARGATE_SPOT
 
   ECSAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
