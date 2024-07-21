@@ -11,21 +11,6 @@ Parameters:
     Default: dev
     Description: The environment name (dev or prd)
 
-  InstanceTypeParameter:
-    Type: String
-    Default: t3.micro
-    AllowedValues:
-      - t3.micro
-      - t3.small
-      - t3.medium
-      - t3.large
-    Description: "Select an Instance Type"
-
-  DesiredCapacity:
-    Type: Number
-    Default: 2
-    Description: Desired number of EC2 instances in the ECS cluster
-
   DBName:
     Type: AWS::SSM::Parameter::Value<String>
     Description: The name of the database
