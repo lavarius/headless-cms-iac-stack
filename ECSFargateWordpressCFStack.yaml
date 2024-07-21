@@ -300,6 +300,11 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: !Sub "${EnvironmentName}-wordpress-task"
+      RequiresCompatibilities:
+        - FARGATE
+      NetworkMode: awsvpc
+      Cpu: "1024"
+      Memory: "2048"
       ContainerDefinitions:
         - Name: wordpress
           Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${EnvironmentName}-wordpress:latest"
@@ -312,9 +317,6 @@ Resources:
               Value: !Ref DBUser
             - Name: WORDPRESS_DB_PASSWORD
               Value: !Ref DBPassword
-          Cpu: 1024
-          Memory: 1024
-          MemoryReservation: 512
           LogConfiguration:
             LogDriver: awslogs
             Options:
