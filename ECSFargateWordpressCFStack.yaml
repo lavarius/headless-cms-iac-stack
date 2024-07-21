@@ -369,7 +369,7 @@ Resources:
       Name: !Sub "${EnvironmentName}-wordpress-target-group"
       Port: 80
       Protocol: HTTP
-      TargetType: instance
+      TargetType: ip
       VpcId: !Ref VPC
 
   ALBListener:
