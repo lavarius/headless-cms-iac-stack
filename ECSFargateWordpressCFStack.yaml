@@ -460,13 +460,6 @@ Resources:
                   - logs:PutLogEvents
                 Resource: "*"
 
-Mappings:
-  AWSRegionToAMI:
-    us-west-1:
-      AMIID: ami-0fb83b36371e7dab5
-    us-west-2:
-      AMIID: ami-078701cc0905d44e4
-
 Outputs:
   WordPressURL:
     Description: The URL of the WordPress application
