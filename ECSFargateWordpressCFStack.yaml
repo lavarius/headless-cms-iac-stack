@@ -252,19 +252,6 @@ Resources:
           Value: !Sub "${EnvironmentName}-ECS-Instance"
           PropagateAtLaunch: true
 
-  ECSLaunchConfiguration:
-    Type: AWS::AutoScaling::LaunchConfiguration
-    Properties:
-      ImageId: !FindInMap [AWSRegionToAMI, !Ref "AWS::Region", AMIID]
-      InstanceType: !Ref InstanceTypeParameter
-      IamInstanceProfile: !Ref ECSInstanceProfile
-      SecurityGroups:
-        - !Ref ECSSecurityGroup
-      UserData:
-        Fn::Base64: !Sub |
-          #!/bin/bash
-          echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
-
   ECSInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
