@@ -237,41 +237,6 @@ Resources:
         - FARGATE
         - FARGATE_SPOT
 
-  ECSAutoScalingGroup:
-    Type: AWS::AutoScaling::AutoScalingGroup
-    Properties:
-      VPCZoneIdentifier:
-        - !Ref PrivateSubnet1
-        - !Ref PrivateSubnet2
-      LaunchConfigurationName: !Ref ECSLaunchConfiguration
-      MinSize: !If [IsProd, 2, 1]
-      MaxSize: !If [IsProd, 4, 2]
-      DesiredCapacity: !Ref DesiredCapacity
-      Tags:
-        - Key: Name
-          Value: !Sub "${EnvironmentName}-ECS-Instance"
-          PropagateAtLaunch: true
-
-  ECSInstanceProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties:
-      Path: /
-      Roles:
-        - !Ref ECSInstanceRole
-
-  ECSInstanceRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ec2.amazonaws.com
-            Action: "sts:AssumeRole"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
-
   ECSSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
