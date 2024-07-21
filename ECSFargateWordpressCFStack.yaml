@@ -276,7 +276,7 @@ Resources:
       ServiceName: !Sub "${EnvironmentName}-wordpress-service"
       Cluster: !Ref ECSCluster
       TaskDefinition: !Ref WordpressTaskDefinition
-      DesiredCount: !Ref DesiredCapacity
+      DesiredCount: !If [IsProd, 2, 1]
       LaunchType: FARGATE
       NetworkConfiguration:
         AwsvpcConfiguration:
