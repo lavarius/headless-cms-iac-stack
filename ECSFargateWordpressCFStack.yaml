@@ -15,18 +15,6 @@ Parameters:
     Type: AWS::SSM::Parameter::Value<String>
     Description: The name of the database
     Default: "/wordpress/${EnvironmentName}/db_name"
-  DBUser:
-    Type: AWS::SSM::Parameter::Value<String>
-    Description: The username for the database
-    Default: "/wordpress/${EnvironmentName}/db_user"
-  DBPassword:
-    Type: AWS::SecretsManager::Secret::Value<String>
-    Description: The password for the database user
-    Default: "wordpress_${EnvironmentName}_db_password"
-  DBRootPassword:
-    Type: AWS::SecretsManager::Secret::Value<String>
-    Description: The root password for the database
-    Default: "wordpress_${EnvironmentName}_db_root_password"
 
 Conditions:
   IsProd: !Equals [!Ref EnvironmentName, prd]
