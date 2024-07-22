@@ -260,19 +260,13 @@ Resources:
             - ContainerPort: 80
           Environment:
             - Name: WORDPRESS_DB_HOST
-              ValueFrom:
-                SSMParameterName: !Ref WordpressDBHostParameter # Dynamically fetches the DB host from Parameter Store
+              Value: !Ref WordpressDBHostParameter # Dynamically fetch the DB host from Parameter Store
             - Name: WORDPRESS_DB_NAME
-              ValueFrom:
-                SSMParameterName: !Ref WordpressDBNameParameter
+              Value: !Ref WordpressDBNameParameter
             - Name: WORDPRESS_DB_USER
-              ValueFrom:
-                SecretId: !Ref DBCredentialsSecret # username under the 'username' key
-                Key: username
+              Value: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:username}}"
             - Name: WORDPRESS_DB_PASSWORD
-              ValueFrom:
-                SecretId: !Ref DBCredentialsSecret # password under the 'password' key
-                Key: password
+              Value: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:password}}"
           LogConfiguration:
             LogDriver: awslogs
             Options:
