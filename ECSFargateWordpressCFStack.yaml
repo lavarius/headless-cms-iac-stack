@@ -238,7 +238,6 @@ Resources:
           ToPort: 3306
           CidrIP: 10.0.0.0/16
           Description: Allow MySQL access from VPC
-          SourceSecurityGroupId: !Ref ECSSecurityGroup
 
   ECSCluster:
     Type: AWS::ECS::Cluster
