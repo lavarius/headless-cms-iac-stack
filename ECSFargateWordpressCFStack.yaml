@@ -263,11 +263,13 @@ Resources:
             - ContainerPort: 80
           Environment:
             - Name: WORDPRESS_DB_HOST
-              Value: !GetAtt MySQLDatabase.Endpoint.Address
+              Value: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/wordpress/dev/db_host"
+            - Name: WORDPRESS_DB_NAME
+              Value: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/wordpress/dev/db_name"
             - Name: WORDPRESS_DB_USER
-              Value: !Ref DBUser
+              Value: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:username}}"
             - Name: WORDPRESS_DB_PASSWORD
-              Value: !Sub "{{resolve:secretsmanager:${DBPassword}}}"
+              Value: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:password}}"
           LogConfiguration:
             LogDriver: awslogs
             Options:
