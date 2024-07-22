@@ -269,7 +269,7 @@ Resources:
             - ContainerPort: 80
           Environment:
             - Name: WORDPRESS_DB_HOST
-              Value: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/wordpress/${EnvironmentName}/db_host"
+              SSMParameterName: !Ref WordpressDBHostParameter
             - Name: WORDPRESS_DB_NAME
               Value: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/wordpress/${EnvironmentName}/db_name"
             - Name: WORDPRESS_DB_USER
