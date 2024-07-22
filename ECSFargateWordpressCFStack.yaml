@@ -195,7 +195,7 @@ Resources:
       AllocatedStorage: !If [IsProd, "100", "20"]
       DBInstanceClass: !If [IsProd, "db.t3.medium", "db.t3.micro"]
       Engine: mysql
-      EngineVersion: "5.7"
+      EngineVersion: "8.0.35"
       DBName: !Ref DBName
       MasterUsername: !Ref DBUser
       MasterUserPassword: !Ref DBPassword
@@ -253,7 +253,7 @@ Resources:
             - Name: WORDPRESS_DB_USER
               Value: !Ref DBUser
             - Name: WORDPRESS_DB_PASSWORD
-              Value: !Ref DBPassword
+              Value: !Sub '{{resolve:secretsmanager:${DBPassword}}}'
           LogConfiguration:
             LogDriver: awslogs
             Options:
