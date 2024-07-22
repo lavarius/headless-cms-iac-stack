@@ -224,11 +224,6 @@ Resources:
           ToPort: 3306
           CidrIP: 10.0.0.0/16
           Description: Allow MySQL access from VPC
-        - IpProtocol: tcp
-          FromPort: 3306
-          ToPort: 3306
-          CidrIp: 104.60.236.189/32
-          Description: Allow MySQL access from specific IP
 
   ECSCluster:
     Type: AWS::ECS::Cluster
