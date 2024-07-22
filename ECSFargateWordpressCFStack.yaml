@@ -197,7 +197,8 @@ Resources:
       DBInstanceClass: !If [IsProd, "db.t3.medium", "db.t4g.micro"]
       Engine: mysql
       EngineVersion: "8.0.35"
-      DBName: wordpress
+      DBInstanceIdentifier: !Sub "wordpress-${EnvironmentName}-instance" # Differentiate instance identifier
+      DBName: wordpress # Initial database name necessary for reference from initialized Wordpress installation
       MasterUsername:
         !Join [
           "",
