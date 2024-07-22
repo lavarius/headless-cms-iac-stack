@@ -265,9 +265,9 @@ Resources:
             - ContainerPort: 80
           Environment:
             - Name: WORDPRESS_DB_HOST
-              Value: !Ref WordpressDBHostParameter # Dynamically fetch the DB host from Parameter Store
+              Value: !GetAtt WordpressDBHostParameter.Value # Dynamically fetch the DB host from Parameter Store
             - Name: WORDPRESS_DB_NAME
-              Value: !Ref WordpressDBNameParameter
+              Value: !GetAtt WordpressDBNameParameter.Value
             - Name: WORDPRESS_DB_USER
               Value: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:username}}"
             - Name: WORDPRESS_DB_PASSWORD
