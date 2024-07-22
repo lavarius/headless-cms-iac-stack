@@ -188,7 +188,6 @@ Resources:
       Name: /wordpress/${EnvironmentName}/db_host
       Type: String
       Value: !GetAtt MySQLDatabase.Endpoint.Address # Dynamically fetches the RDS instance endpoint
-      Overwrite: true
 
   WordpressDBNameParameter:
     Type: AWS::SSM::Parameter
@@ -196,7 +195,6 @@ Resources:
       Name: !Sub "/wordpress/${EnvironmentName}/db_name"
       Type: String
       Value: "wordpress" # Matches MySQLDatabase DBName
-      Overwrite: true
 
   MySQLDatabase:
     Type: AWS::RDS::DBInstance
