@@ -190,6 +190,14 @@ Resources:
       Value: !GetAtt MySQLDatabase.Endpoint.Address # Dynamically fetches the RDS instance endpoint
       Overwrite: true
 
+  WordpressDBNameParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Sub "/wordpress/${EnvironmentName}/db_name"
+      Type: String
+      Value: "wordpress" # Matches MySQLDatabase DBName
+      Overwrite: true
+
   MySQLDatabase:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -269,13 +277,19 @@ Resources:
             - ContainerPort: 80
           Environment:
             - Name: WORDPRESS_DB_HOST
-              SSMParameterName: !Ref WordpressDBHostParameter
+              ValueFrom:
+                SSMParameterName: !Ref WordpressDBHostParameter # Dynamically fetches the DB host from Parameter Store
             - Name: WORDPRESS_DB_NAME
-              Value: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/wordpress/${EnvironmentName}/db_name"
+              ValueFrom:
+                SSMParameterName: !Ref WordpressDBNameParameter
             - Name: WORDPRESS_DB_USER
-              Value: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:username}}"
+              ValueFrom:
+                SecretId: !Ref DBCredentialsSecret # username under the 'username' key
+                Key: username
             - Name: WORDPRESS_DB_PASSWORD
-              Value: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:password}}"
+              ValueFrom:
+                SecretId: !Ref DBCredentialsSecret # password under the 'password' key
+                Key: password
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -433,3 +447,7 @@ Outputs:
   ECSCluster:
     Description: The name of the ECS cluster
     Value: !Ref ECSCluster
+
+  WordPressDBName:
+    Description: "The name of the WordPress database."
+    Value: "wordpress" # Manually synchronized with MySQLDatabase DBName
