@@ -11,11 +11,6 @@ Parameters:
     Default: dev
     Description: The environment name (dev or prd)
 
-  DBName:
-    Type: AWS::SSM::Parameter::Value<String>
-    Description: The name of the database
-    Default: "/wordpress/${EnvironmentName}/db_name"
-
 Conditions:
   IsProd: !Equals [!Ref EnvironmentName, prd]
 
@@ -187,14 +182,22 @@ Resources:
         PasswordLength: 16
         ExcludeCharacters: '"@/\'
 
+  WordpressDBHostParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /wordpress/${EnvironmentName}/db_host
+      Type: String
+      Value: !Sub "mysql.${AWS::Region}.rds.amazonaws.com:${AWS::AccountId}"
+      Overwrite: true
+
   MySQLDatabase:
     Type: AWS::RDS::DBInstance
     Properties:
       AllocatedStorage: !If [IsProd, "100", "20"]
-      DBInstanceClass: !If [IsProd, "db.t3.medium", "db.t3.micro"]
+      DBInstanceClass: !If [IsProd, "db.t3.medium", "db.t4g.micro"]
       Engine: mysql
       EngineVersion: "8.0.35"
-      DBName: !Ref DBName
+      DBName: wordpress
       MasterUsername:
         !Join [
           "",
@@ -226,6 +229,8 @@ Resources:
         - IpProtocol: tcp
           FromPort: 3306
           ToPort: 3306
+          CidrIP: 10.0.0.0/16
+          Description: Allow MySQL access from VPC
           SourceSecurityGroupId: !Ref ECSSecurityGroup
 
   ECSCluster:
