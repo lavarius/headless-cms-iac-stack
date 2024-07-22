@@ -205,22 +205,8 @@ Resources:
       EngineVersion: "8.0.35"
       DBInstanceIdentifier: !Sub "wordpress-${EnvironmentName}-instance" # Differentiate instance identifier
       DBName: wordpress # Initial database name necessary for reference from initialized Wordpress installation
-      MasterUsername: !Join [
-          "",
-          [
-            "{{resolve:secretsmanager:",
-            !Ref DBCredentialsSecret,
-            ":SecretString:username}}",
-          ],
-        ] # Username from Secrets Manager
-      MasterUserPassword: !Join [
-          "",
-          [
-            "{{resolve:secretsmanager:",
-            !Ref DBCredentialsSecret,
-            ":SecretString:password}}",
-          ],
-        ] # Password from Secrets Manager
+      MasterUsername: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:username}}"
+      MasterUserPassword: !Sub "{{resolve:secretsmanager:${DBCredentialsSecret}:SecretString:password}}"
       DBSubnetGroupName: !Ref DatabaseSubnetGroup
       VPCSecurityGroups:
         - !Ref DatabaseSecurityGroup
