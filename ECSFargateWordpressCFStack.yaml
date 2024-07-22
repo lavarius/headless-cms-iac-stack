@@ -187,7 +187,7 @@ Resources:
     Properties:
       Name: /wordpress/${EnvironmentName}/db_host
       Type: String
-      Value: !Sub "mysql.${AWS::Region}.rds.amazonaws.com:${AWS::AccountId}"
+      Value: !GetAtt MySQLDatabase.Endpoint.Address # Dynamically fetches the RDS instance endpoint
       Overwrite: true
 
   MySQLDatabase:
