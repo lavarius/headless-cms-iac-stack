@@ -185,7 +185,7 @@ Resources:
   WordpressDBHostParameter:
     Type: AWS::SSM::Parameter
     Properties:
-      Name: /wordpress/${EnvironmentName}/db_host
+      Name: !Sub "/wordpress/${EnvironmentName}/db_host"
       Type: String
       Value: !GetAtt MySQLDatabase.Endpoint.Address # Dynamically fetches the RDS instance endpoint
 
