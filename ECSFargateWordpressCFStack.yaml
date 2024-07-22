@@ -177,6 +177,16 @@ Resources:
         - !Ref DatabaseSubnet1
         - !Ref DatabaseSubnet2
 
+  DBCredentialsSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub "wordpress/${EnvironmentName}/db_credentials"
+      GenerateSecretString:
+        SecretStringTemplate: '{"username": "admin"}'
+        GenerateStringKey: "password"
+        PasswordLength: 16
+        ExcludeCharacters: '"@/\'
+
   MySQLDatabase:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -241,7 +251,7 @@ Resources:
             - Name: WORDPRESS_DB_USER
               Value: !Ref DBUser
             - Name: WORDPRESS_DB_PASSWORD
-              Value: !Sub '{{resolve:secretsmanager:${DBPassword}}}'
+              Value: !Sub "{{resolve:secretsmanager:${DBPassword}}}"
           LogConfiguration:
             LogDriver: awslogs
             Options:
