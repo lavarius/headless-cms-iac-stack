@@ -255,7 +255,7 @@ Resources:
       Memory: "2048"
       ContainerDefinitions:
         - Name: wordpress
-          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${EnvironmentName}-wordpress:latest"
+          Image: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${EnvironmentName}-wordpress:6.6"
           PortMappings:
             - ContainerPort: 80
           Environment:
