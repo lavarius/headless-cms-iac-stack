@@ -199,8 +199,8 @@ Resources:
   MySQLDatabase:
     Type: AWS::RDS::DBInstance
     Properties:
-      AllocatedStorage: !If [IsProd, "100", "20"]
-      DBInstanceClass: !If [IsProd, "db.t3.micro", "db.t4g.micro"]
+      AllocatedStorage: !If [IsProd, "20", "20"]
+      DBInstanceClass: !If [IsProd, "db.t4g.micro", "db.t4g.micro"]
       Engine: mysql
       EngineVersion: "8.0.35"
       DBInstanceIdentifier: !Sub "wordpress-${EnvironmentName}-instance" # Differentiate instance identifier
@@ -280,7 +280,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub "/ecs/${EnvironmentName}-wordpress"
-      RetentionInDays: !If [IsProd, 30, 7]
+      RetentionInDays: !If [IsProd, 7, 7]
 
   WordpressService:
     Type: AWS::ECS::Service
@@ -289,7 +289,7 @@ Resources:
       ServiceName: !Sub "${EnvironmentName}-wordpress-service"
       Cluster: !Ref ECSCluster
       TaskDefinition: !Ref WordpressTaskDefinition
-      DesiredCount: !If [IsProd, 2, 1]
+      DesiredCount: !If [IsProd, 1, 1]
       LaunchType: FARGATE
       NetworkConfiguration:
         AwsvpcConfiguration:
