@@ -1,5 +1,6 @@
 # headless-cms-iac-stack
 
+## For Folder `wordpress` and file: `ECSFargateWordpressCFStack.yaml`
 CloudFormation stack for Wordpress:6.6 that uses Elastic Container Service (ECS) Fargate with Relational Database Service (RDS), and Elastic Container Registry (ECR).
 Other resources utilized are Parameter Store and Secrets Manager.
 
