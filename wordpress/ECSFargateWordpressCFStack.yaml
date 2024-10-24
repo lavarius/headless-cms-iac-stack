@@ -282,6 +282,24 @@ Resources:
       LogGroupName: !Sub "/ecs/${EnvironmentName}-wordpress"
       RetentionInDays: !If [IsProd, 7, 7]
 
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      MinSize: 1
+      MaxSize: 10
+      DesiredCapacity: 1
+      VPCZoneIdentifier: !Ref PublicSubnet1
+      TargetTrackingScalingPolicyConfiguration:
+        ScaleOutCooldown: 60
+        ScaleInCooldown: 60
+        TargetTrackingScalingPolicyConfiguration:
+          PredefinedMetricSpecification:
+            MetricName: CPUUtilization
+            Namespace: AWS/EC2
+            Statistic: Average
+            Threshold: 70
+            TimeGranularity: FifteenMinutes
+
   WordpressService:
     Type: AWS::ECS::Service
     DependsOn: ALBListener
@@ -299,6 +317,8 @@ Resources:
             - !Ref PublicSubnet2
           SecurityGroups:
             - !Ref ECSSecurityGroup
+      AutoScalingGroupProvider:
+        AutoScalingGroupArn: !GetAtt AutoScalingGroup.AutoScalingGroupARN
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
